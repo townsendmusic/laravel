@@ -1,0 +1,169 @@
+-- MySQL dump 10.13  Distrib 5.7.23, for macos10.13 (x86_64)
+--
+-- Host: 127.0.0.1    Database: laraveltest
+-- ------------------------------------------------------
+-- Server version	5.7.31
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `artists`
+--
+
+DROP TABLE IF EXISTS `artists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `artists` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=386796 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `artists`
+--
+
+LOCK TABLES `artists` WRITE;
+/*!40000 ALTER TABLE `artists` DISABLE KEYS */;
+INSERT INTO `artists` VALUES (386795,'The Tests');
+/*!40000 ALTER TABLE `artists` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sections`
+--
+
+DROP TABLE IF EXISTS `sections`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sections` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `store_id` int(11) NOT NULL,
+  `description` varchar(50) NOT NULL,
+  `order` int(11) NOT NULL,
+  `parent` int(11) NOT NULL DEFAULT '0',
+  `ppr_override` int(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `description` (`description`),
+  KEY `idx_order` (`order`,`store_id`),
+  KEY `idx_store_id` (`store_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8415 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sections`
+--
+
+LOCK TABLES `sections` WRITE;
+/*!40000 ALTER TABLE `sections` DISABLE KEYS */;
+INSERT INTO `sections` VALUES (3223,3,'Merchandise',3,2,0),(3243,3,'Tickets',0,3,0),(3253,3,'Downloads',1,5,0),(7416,3,'Bundles',0,4,0),(7796,3,'Vinyl',2,5,0),(8408,3,'T-Shirts',0,2,0),(8412,3,'Accessories',2,2,0),(8414,3,'Hoodies',1,2,0);
+/*!40000 ALTER TABLE `sections` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `store_products`
+--
+
+DROP TABLE IF EXISTS `store_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `store_products` (
+  `id` int(13) NOT NULL AUTO_INCREMENT,
+  `store_id` int(11) NOT NULL,
+  `artist_id` int(11) NOT NULL,
+  `type` enum('music','merch','ticket','download','multi','external','linked','box','free') NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `launch_date` datetime NOT NULL,
+  `remove_date` datetime NOT NULL,
+  `release_date` date NOT NULL,
+  `description` text NOT NULL,
+  `available` tinyint(1) NOT NULL DEFAULT '0',
+  `price` float(8,2) NOT NULL,
+  `euro_price` float(8,2) NOT NULL,
+  `dollar_price` float(8,2) NOT NULL,
+  `image_format` varchar(10) NOT NULL,
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `disabled_countries` mediumtext NOT NULL,
+  `display_name` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `position` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `artist_id` (`artist_id`),
+  KEY `availability` (`available`,`launch_date`,`remove_date`,`store_id`,`deleted`),
+  KEY `available` (`available`),
+  KEY `deleted` (`deleted`),
+  KEY `idx_store_id_linked_download` (`store_id`),
+  KEY `launch_date` (`launch_date`),
+  KEY `remove_date` (`remove_date`),
+  KEY `store_id` (`store_id`),
+  KEY `type` (`type`,`deleted`),
+  FULLTEXT KEY `display_name` (`display_name`),
+  FULLTEXT KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=63414 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `store_products`
+--
+
+LOCK TABLES `store_products` WRITE;
+/*!40000 ALTER TABLE `store_products` DISABLE KEYS */;
+INSERT INTO `store_products` VALUES (16586,3,386795,'merch','Navy Beanie','2015-03-03 00:00:00','0000-00-00 00:00:00','0000-00-00','<p><span style=\"line-height: 1.6em;\">100% Soft touch acrylic slouch beanie Navy colour with The Tests team logo embroidered.</span></p>\n<p><strong>Size Guide</strong></p>\n<ul>\n<li>One size fits all</li>\n</ul>',1,10.00,11.99,12.99,'jpg',0,'','',NULL,NULL,NULL),(24612,3,386795,'music','','0000-00-00 00:00:00','0000-00-00 00:00:00','2015-03-06','The first 12 track EP from The Tests.<br /><br />Written and recorded from their home studio in London.<br /><br /><br />',1,7.00,8.99,8.99,'jpg',0,'','',NULL,NULL,NULL),(24614,3,386795,'music','Rigid Freaks','2018-03-20 13:35:00','0000-00-00 00:00:00','2015-03-25','Rigid Freaks is the culmination of 3 tours, 2 festival headline shows and five years of blood, sweat and love shows.<br /><br />Rigid Freaks is only available on the official The Tests westore',1,13.00,15.99,16.99,'jpg',0,'','',NULL,NULL,NULL),(24615,3,386795,'download','Tibby Black','0000-00-00 00:00:00','0000-00-00 00:00:00','2015-03-26','Available as a download only, \"Tibby Black\" celebrates The Tests 12th year of chart success.',1,4.50,6.99,6.99,'jpg',0,'','',NULL,NULL,NULL),(24616,3,386795,'music','','0000-00-00 00:00:00','0000-00-00 00:00:00','2015-03-06','Stars is the second, critically acclaimed album from The Tests.<br /><br /><em>\"Deep earthy sounds and haunting melodies\"</em> - Famous Radio DJ<br /><br />\"Spellbinding. Excels in both content and delivery\" - Editor - from a magazine<br /><br /><em>\"Not only does this album prove that The Tests are a tour de force, but will be playing on our speakers for years to come\"</em> - Guitarist from Iconic Rock Band',1,12.00,13.99,14.99,'jpg',0,'','',NULL,NULL,NULL),(24617,3,386795,'merch','Rigid Freaks - Splatter T-Shirt','0000-00-00 00:00:00','0000-00-00 00:00:00','2015-05-31','Tie-dye mens relaxed fit t-shirt.<br /><br />Due to the nature of this item t-shirt designs may vary.<br /><br /><br />',1,15.00,20.99,22.99,'jpg',0,'','',NULL,NULL,NULL),(24620,3,386795,'merch','Gun T-Shirt','0000-00-00 00:00:00','0000-00-00 00:00:00','2015-03-06','New typography t-shirt released alongside the \"Dont Question The Gun\" EP',1,15.00,20.99,22.99,'jpg',0,'','',NULL,NULL,NULL),(24621,3,386795,'merch','Marathon Ladies T-Shirt','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','\"It\'s a Marathon! Marathon!\"<br /><br />A t-shirt just for the ladies!',1,12.00,16.99,18.99,'jpg',0,'','',NULL,NULL,NULL),(24622,3,386795,'merch','Tibby Black Mens Henley Style T-Shirt','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','Long sleeve, white, ribbed, henleys style t-shirt',1,20.00,27.99,30.99,'jpg',0,'','',NULL,NULL,NULL),(24634,3,386795,'merch','Don\'t Question The Gun Hoodie','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','Maroon relaxed fit hoody.',1,45.00,62.99,68.99,'jpg',0,'','',NULL,NULL,NULL),(24635,3,386795,'merch','Escape Tomorrow Hoodie','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','Navy relaxed fit mens hoodie',1,35.00,48.99,52.99,'jpg',0,'','',NULL,NULL,NULL),(24636,3,386795,'merch','Rigid Freaks Extreme Splatter Hoodie','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','Black hoodie, with all over white splatter print effect',1,45.00,62.99,68.99,'jpg',0,'','',NULL,NULL,NULL),(24637,3,386795,'merch','Tibby Black Grey Hoodie','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','Grey mens drawstring pull over hoodie',1,35.00,48.99,52.99,'jpg',0,'','',NULL,NULL,NULL),(24638,3,386795,'merch','Tote Bag','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','',1,5.00,6.99,7.99,'jpg',0,'','',NULL,NULL,NULL),(24639,3,386795,'merch','The Test On Tour - Tour Poster \'09','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','',1,3.00,4.99,4.99,'jpg',0,'','',NULL,NULL,NULL),(24641,3,386795,'ticket','The Tests On Tour - Summer Show Ticket','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','The Tests On Tour - Summer Show Ticket',-1,0.00,0.00,0.00,'jpg',0,'','',NULL,NULL,NULL),(24642,3,386795,'multi','Rigid Freaks Bundle','0000-00-00 00:00:00','0000-00-00 00:00:00','2015-03-10','',0,50.00,69.99,75.99,'jpg',0,'','',NULL,NULL,NULL),(24643,3,386795,'multi','Tibby Black Bundle','0000-00-00 00:00:00','0000-00-00 00:00:00','2015-03-10','',0,50.00,69.99,75.99,'jpg',0,'','',NULL,NULL,NULL),(24644,3,386795,'multi','Ladies Bundle','0000-00-00 00:00:00','0000-00-00 00:00:00','2015-03-10','',0,14.00,19.99,21.99,'jpg',0,'','',NULL,NULL,NULL),(28130,3,386795,'music','Test The Theory','2018-03-12 11:56:00','0000-00-00 00:00:00','2017-08-31','Following on from the success of the last Album, The Test\'s are back with a new explosive sound described by MNE as \'Truly Original\'.<br /><br />The Test\'s themselves have expressed that this album is the best album they\'ve produced in years.&nbsp;<br /><br />Including several exclusive tracks available only on the album with guest features by greats like Jax and legendary guitarist Johnny Saturno this album is set to impress.',1,10.00,11.99,12.99,'jpg',0,'','',NULL,NULL,NULL),(28131,3,386795,'music','Test The Theory','0000-00-00 00:00:00','0000-00-00 00:00:00','2017-03-01','<span>Following on from the success of the last Album, The Test\'s are back with a new explosive sound described by MNE as \'Truly Original\'.</span><br /><br /><span>The Test\'s themselves have expressed that this album is the best album they\'ve produced in years.&nbsp;</span><br /><br /><span>Including several exclusive tracks available only on the album with guest features by greats like Jax and legendary guitarist Johnny Saturno this album is set to impress. - See more at: http://test.tmstore.co.uk/#sthash.SagiDcqV.dpuf</span>',1,16.00,18.99,19.99,'jpg',0,'','',NULL,NULL,NULL),(28132,3,386795,'download','Test The Theory','0000-00-00 00:00:00','0000-00-00 00:00:00','2016-03-01','<span>Following on from the success of the last Album, The Test\'s are back with a new explosive sound described by MNE as \'Truly Original\'.</span><br /><br /><span>The Test\'s themselves have expressed that this album is the best album they\'ve produced in years.&nbsp;</span><br /><br /><span>Including several exclusive tracks available only on the album with guest features by greats like Jax and legendary guitarist Johnny Saturno this album is set to impress. - See more at: http://test.tmstore.co.uk/#sthash.SagiDcqV.dpuf</span>',1,7.00,8.99,8.99,'jpg',0,'','',NULL,NULL,NULL),(28133,3,386795,'merch','Test The Theory T-Shirt','0000-00-00 00:00:00','0000-00-00 00:00:00','2016-11-01','<span>Following on from the success of the last Album, The Test\'s are back with a new explosive sound described by MNE as \'Truly Original\'. This T-Shirt is the official accompaniment to the album. Show your support and \'Test The Theory\'.</span>',1,10.00,11.99,12.99,'jpg',0,'','',NULL,NULL,NULL),(28134,3,386795,'merch','Test The Theory - Hoody','0000-00-00 00:00:00','0000-00-00 00:00:00','2016-11-01','<span>Following on from the success of the last Album, The Test\'s are back with a new explosive sound described by MNE as \'Truly Original\'. Get the official hoody to show your support for the band and \'Test The Theory\'</span>',1,20.00,23.99,24.99,'jpg',0,'','',NULL,NULL,NULL),(28135,3,386795,'multi','Test The Theory Deluxe Bundle','0000-00-00 00:00:00','0000-00-00 00:00:00','2017-03-01','<span>Following on from the success of the last Album, The Test\'s are back with a new explosive sound described by MNE as \'Truly Original\'.</span><br /><br /><span>The Test\'s themselves have expressed that this album is the best album they\'ve produced in years.&nbsp;</span><br /><br /><span><span>Including several exclusive tracks available only on the album with guest features by greats like Jax and legendary guitarist Johnny Saturno this album is set to impress.<br /><br />This bundle includes:<br /></span></span>\n<ul>\n<li>Test The Theory - CD</li>\n<li><span>Test The Theory -&nbsp;Download</span></li>\n<li><span><span>Test The Theory - Vinyl</span></span></li>\n<li><span><span><span>Test The Theory - T -Shirt</span></span></span></li>\n<li><span><span><span><span>Test The Theory - Hoody</span></span></span></span></li>\n</ul>',0,55.00,63.99,67.99,'jpg',0,'','',NULL,NULL,NULL),(28136,3,386795,'multi','Test The Theory CD Bundle','0000-00-00 00:00:00','0000-00-00 00:00:00','2017-03-01','Following on from the success of the last Album, The Test\'s are back with a new explosive sound described by MNE as \'Truly Original\'.<br /><br />The Test\'s themselves have expressed that this album is the best album they\'ve produced in years.&nbsp;<br /><br />Including several exclusive tracks available only on the album with guest features by greats like Jax and legendary guitarist Johnny Saturno this album is set to impress.<br /><br />This bundle includes:<br />\n<ul>\n<li>Test The Theory - CD</li>\n<li>Test The Theory -&nbsp;Download</li>\n<li>Test The Theory - T -Shirt</li>\n<li>Test The Theory - Hoody</li>\n</ul>',0,45.00,52.99,55.99,'jpg',0,'','',NULL,NULL,NULL),(28618,3,386795,'merch','Signed Fender Stratocaster','0000-00-00 00:00:00','0000-00-00 00:00:00','2016-03-01','This fender stratocaster has been signed by each band member and was used in the recording of the new album. This is the only one available and is a collector\'s item! Don\'t miss out on claiming this piece of history. &pound;500 from this sale will be donated to the Test\'s favoured charity, \'Cancer Research\'.',1,1995.00,2533.99,2881.99,'jpg',0,'','',NULL,NULL,NULL),(32672,3,386795,'ticket','Test Gig','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','',2,0.00,0.00,0.00,'',0,'','',NULL,NULL,NULL),(36423,3,386795,'music','Box','0000-00-00 00:00:00','0000-00-00 00:00:00','2018-02-02','',1,200.00,229.99,283.99,'',0,'','',NULL,NULL,NULL),(36503,3,386795,'music','A CD Album','0000-00-00 00:00:00','0000-00-00 00:00:00','2018-02-08','',1,99.00,112.99,140.99,'',0,'AF,AL,DZ,AS,AD,AO,AI,AQ,AG,AR,AM,AW,AU,AT,AZ,BS,BH,BD,BB,BY,BE,BZ,BJ,BM,BT,BO,BA,BW,BV,BR,IO,BN,BG,BF,BI,KH,CM,CA,CV,KY,CF,TD,CL,CN,CX,CC,CO,KM,CG,CK,CR,CI,HR,CY,CZ,CD,DK,DJ,DM,DO,TP,EC,EG,SV,EE,FK,FO,FJ,FI,FR,GF,PF,TF,GA,GM,GE,DE,GH,GI,GR,GL,GD,GP,GU,GT,GN,GW,GY,HT,HM,VA,HN,HK,HU,IS,IN,ID,IQ,IE,IM,IL,IT,JM,JP,JO,KZ,KE,KI,KW,KG,LA,LV,LB,LS,LR,LY,LI,LT,LU,MO,MK,MG,MW,MY,MV,ML,MT,MH,MQ,MR,MU,YT,MX,FM,MD,MC,MN,ME,MS,MA,MZ,MM,NA,NR,NP,NL,AN,NC,NZ,NI,NE,NG,NU,NF,MP,NO,OM,PK,PW,PS,PA,PG,PY,PE,PH,PN,PL,PT,PR,QA,RE,RO,RU,RW,KN,LC,VC,WS,SM,ST,SA,SN,RS,SC,SL,SG,SK,SI,SB,SO,ZA,GS,KR,ES,IC,LK,SH,PM,SR,SJ,SZ,SE,CH,TW,TJ,TZ,TH,TG,TK,TO,TT,TN,TR,TM,TC,TV,UG,UA,AE,US,UM,UY,UZ,VU,VE,VN,VG,VI,WF,EH,YE,ZM,ZW','',NULL,NULL,NULL),(36634,3,386795,'free','Free Bandana','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','with Free Bandana',1,9.99,11.99,13.99,'',0,'','',NULL,NULL,NULL),(38057,3,386795,'ticket','I AM A TICKET','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','',0,0.00,0.00,0.00,'',0,'','',NULL,NULL,NULL),(38058,3,386795,'merch','I AM MERCH','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','',0,333.00,380.99,448.99,'',0,'','',NULL,NULL,NULL),(53975,3,386795,'music','Demo','0000-00-00 00:00:00','0000-00-00 00:00:00','2019-08-15','<h1>ALBUM HERE</h1>',0,22.00,24.99,26.99,'',0,'','The Tremblers',NULL,NULL,NULL),(53976,3,386795,'download','FILMS','0000-00-00 00:00:00','0000-00-00 00:00:00','2019-08-21','<h1>FILM HERE</h1>',0,213.00,232.99,258.99,'',0,'','ffffffffffffffff',NULL,NULL,NULL),(56800,3,386795,'multi','OSLO HAS FALLEN','0000-00-00 00:00:00','0000-00-00 00:00:00','2019-10-25','',0,138.00,153.99,168.99,'jpg',0,'','',NULL,NULL,NULL),(62935,3,386795,'merch','fdsfds','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00','',0,666.00,757.00,823.00,'',0,'','fdsfds',NULL,NULL,NULL);
+/*!40000 ALTER TABLE `store_products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `store_products_section`
+--
+
+DROP TABLE IF EXISTS `store_products_section`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `store_products_section` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `store_product_id` int(11) NOT NULL,
+  `section_id` int(11) NOT NULL,
+  `position` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_section_id` (`section_id`),
+  KEY `idx_section_id_store_product_id` (`section_id`,`store_product_id`),
+  KEY `idx_store_product_id` (`store_product_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=57146 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `store_products_section`
+--
+
+LOCK TABLES `store_products_section` WRITE;
+/*!40000 ALTER TABLE `store_products_section` DISABLE KEYS */;
+INSERT INTO `store_products_section` VALUES (51855,24622,8408,0),(51857,24621,8408,0),(51858,24620,8408,0),(51861,24617,8408,0),(51886,24634,8414,0),(51888,24635,8414,0),(51889,24636,8414,0),(51890,24637,8414,0),(51898,24638,8412,0),(51899,16586,8412,0),(51900,24639,8412,0),(51902,24641,3243,0),(51903,24642,7416,0),(51904,24643,7416,0),(51905,24644,7416,0),(57093,28136,7416,0),(57097,28135,7416,0),(57099,28135,3223,0),(57144,28132,3253,0),(57145,28131,7796,0);
+/*!40000 ALTER TABLE `store_products_section` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'laraveltest'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2021-03-16  7:44:09
