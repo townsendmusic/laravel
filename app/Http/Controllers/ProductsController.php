@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\store_products;
 
 class ProductsController extends Controller
 {
-    public function show(store_products $products)
+    public $storeId;
+    
+    public function __construct()
     {
-        dump($products->sectionProducts(3,'T-Shirtss'));
+        /* As the system manages multiple stores a storeBuilder instance would
+        normally be passed here with a store object. The id of the example 
+        store is being set here for the purpose of the test */
+        $this->storeId = 3;
     }
 }
