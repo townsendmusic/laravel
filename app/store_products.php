@@ -90,8 +90,12 @@ class store_products
                             WHERE sections.$section_field $section_compare '$section' AND ";
 
             } else {
+
+
                 $query .= "LEFT JOIN sections ON sections.id = -1 WHERE ";
             }
+
+
             $query.= " sp.store_id= '$store_id' AND deleted = '0' AND available = 1 ";
 
             $result = $conn->query($query);
@@ -109,7 +113,8 @@ class store_products
 
         $query = $query_start;
 
-        if ($section != '%') {
+        //we need to keep the conditions consistent
+        if ($section != '%' && strtoupper($section) != 'ALL') {
             $query .= "INNER JOIN store_products_section ON store_products_section.store_product_id = sp.id
                         INNER JOIN sections ON store_products_section.section_id = sections.id
                         WHERE sections.$section_field $section_compare '$section' AND ";
@@ -121,9 +126,9 @@ class store_products
 
         $query .= " sp.store_id = '$store_id' AND deleted = '0' AND available = 1  ";
         $query .= $orderby;
-
+       // dd($query);
         $result = $conn->query($query);
-       
+       // dd(list($main_id, $artist_id, $type, $display_name, $name, $launch_date, $remove_date, $description, $available, $price, $euro_price, $dollar_price, $image_format, $disabled_countries, $release_date) = $result->fetch_row());
 
         while (list($main_id, $artist_id, $type, $display_name, $name, $launch_date, $remove_date, $description, $available, $price, $euro_price, $dollar_price, $image_format, $disabled_countries, $release_date) = $result->fetch_row()) {
 

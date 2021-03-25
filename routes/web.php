@@ -16,4 +16,4 @@ use App\Http\Controllers\ProductsController;
 
 Route::get('/', function () {
     return view('welcome');
-})
+});
