@@ -18,6 +18,8 @@ abstract class Filter
      */
     protected array $filters = [];
 
+    protected array $fields = ['*'];
+
     /**
      * @var Request
      */
@@ -28,6 +30,7 @@ abstract class Filter
         $this->request = $request;
     }
 
+
     abstract public function default();
 
     /**
@@ -36,6 +39,8 @@ abstract class Filter
     public function apply(Builder $builder)
     {
         $this->builder = $builder;
+
+        $this->builder->select($this->fields);
 
         $this->default();
 
