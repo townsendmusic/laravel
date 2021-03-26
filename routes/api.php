@@ -16,5 +16,7 @@ use App\Http\Controllers\ProductsController;
 */
 
 Route::middleware('api')->group(function () {
+    Route::get('/products/search/{term}', [ProductsController::class, 'search']);
+
     Route::get('/products/{section?}', [ProductsController::class, 'index']);
 });

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Filters\ProductFilter;
+use App\Filters\ProductIndexFilter;
+use App\Filters\ProductSearchFilter;
 use App\Http\Resources\ProductResource;
 use App\Models\StoreProduct;
-use App\store_products;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductsController extends Controller
 {
@@ -24,15 +25,36 @@ class ProductsController extends Controller
         $this->perPage = 8;
     }
 
-    public function index(StoreProduct $storeProduct, ProductFilter $filters)
+    /**
+     * @param StoreProduct $storeProduct
+     * @param ProductIndexFilter $filters
+     * @param null $section
+     * @return AnonymousResourceCollection
+     */
+    public function index(StoreProduct $storeProduct, ProductIndexFilter $filters, $section = null): AnonymousResourceCollection
     {
-        $s = new store_products();
+        if ($section) {
+            $filters->add(['section' => $section]);
+        }
 
-       // dump($s->sectionProducts($this->storeId, 'all', 8, 1));
         $products = $storeProduct->filter($filters, $this->storeId);
 
+        return (ProductResource::collection($products->paginate($this->perPage)));
+    }
 
-        //dd($products->dd());
+    /**
+     * @param StoreProduct $storeProduct
+     * @param ProductSearchFilter $filters
+     * @param null $term
+     * @return AnonymousResourceCollection
+     */
+    public function search(StoreProduct $storeProduct, ProductSearchFilter $filters, $term = null): AnonymousResourceCollection
+    {
+        if ($term) {
+            $filters->add(['term' => $term]);
+        }
+
+        $products = $storeProduct->filter($filters, $this->storeId);
         return (ProductResource::collection($products->paginate($this->perPage)));
     }
 }

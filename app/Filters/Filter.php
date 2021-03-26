@@ -20,6 +20,8 @@ abstract class Filter
 
     protected array $fields = ['*'];
 
+    private array $manualFilters = [];
+
     /**
      * @var Request
      */
@@ -32,6 +34,11 @@ abstract class Filter
 
 
     abstract public function default();
+
+    public function add(array $filters)
+    {
+        $this->manualFilters = $filters;
+    }
 
     /**
      * @param Builder $builder
@@ -54,6 +61,6 @@ abstract class Filter
      */
     protected function getFilters(): Collection
     {
-        return collect($this->request->only($this->filters))->flip();
+        return collect($this->request->only($this->filters))->merge($this->manualFilters)->flip();
     }
 }

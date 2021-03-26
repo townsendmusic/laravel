@@ -56,8 +56,11 @@ class StoreProduct extends Model
             case 'USD':
                 return $this->dollar_price;
 
-            default:
+            case 'EUR':
                 return $this->euro_price;
+
+            default:
+                return $this->price;
         }
     }
 
