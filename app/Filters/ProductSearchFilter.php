@@ -3,11 +3,10 @@
 namespace App\Filters;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ProductSearchFilter extends ProductFilter
 {
-    protected array $filters = ['term'];
+    protected array $filters = ['term', 'only_pre_order'];
 
     public function term($value)
     {
@@ -40,5 +39,9 @@ class ProductSearchFilter extends ProductFilter
                     ->orwhereBetween('store_products.euro_price', $value);
             });
         }
+    }
+
+    protected function onlyPreOrder() {
+        $this->builder->where('store_products.release_date', '>', DB::raw('now()'));
     }
 }

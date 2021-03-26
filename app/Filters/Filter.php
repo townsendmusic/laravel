@@ -5,6 +5,7 @@ namespace App\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 abstract class Filter
 {
@@ -52,6 +53,7 @@ abstract class Filter
         $this->default();
 
         $this->getFilters()->each(function ($filter, $value) {
+            $filter = Str::camel($filter);
             $this->$filter($value);
         });
     }

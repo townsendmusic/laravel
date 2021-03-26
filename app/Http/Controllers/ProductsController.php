@@ -6,13 +6,17 @@ use App\Filters\ProductIndexFilter;
 use App\Filters\ProductSearchFilter;
 use App\Http\Resources\ProductResource;
 use App\Models\StoreProduct;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Cache;
 
 class ProductsController extends Controller
 {
     public $storeId;
 
     public $perPage;
+
+    protected $cacheSeconds = 60 * 60 * 24;
 
     public function __construct()
     {
@@ -45,16 +49,29 @@ class ProductsController extends Controller
     /**
      * @param StoreProduct $storeProduct
      * @param ProductSearchFilter $filters
+     * @param Request $request
      * @param null $term
      * @return AnonymousResourceCollection
      */
-    public function search(StoreProduct $storeProduct, ProductSearchFilter $filters, $term = null): AnonymousResourceCollection
+    public function search(StoreProduct $storeProduct, ProductSearchFilter $filters, Request $request, $term = null): AnonymousResourceCollection
     {
         if ($term) {
             $filters->add(['term' => $term]);
         }
 
-        $products = $storeProduct->filter($filters, $this->storeId);
-        return (ProductResource::collection($products->paginate($this->perPage)));
+        $products = Cache::remember($this->cacheKey($term, $request), $this->cacheSeconds , function () use ($storeProduct, $filters){
+            return $storeProduct->filter($filters, $this->storeId)->paginate($this->perPage);
+        });
+
+        return (ProductResource::collection($products));
+    }
+
+    protected function cacheKey($term, $request): string
+    {
+        if (is_array($term)) {
+            $term = implode("_", $term);
+        }
+
+        return 'product_search_' . $term . "_" . $request->get('only_pre_order');
     }
 }
