@@ -85,7 +85,6 @@ class db_connection
             }
 
             if (isset($this->safety)) {//Run safety checks if net is set
-
                 try {
                     if (!$values) {
                         //$result = $this->conn_write->query($query);//Use non-prepared query if no values to bind
@@ -232,17 +231,16 @@ class db_connection
         do {
             $one = stristr($query, 'UPDATE ');
             $length = 7;
-            if (!$one){
+            if (!$one) {
                 $one = stristr($query, 'INSERT INTO ');
                 $length = 12;
             }
-            if (!$one){
+            if (!$one) {
                 $one = stristr($query, 'FROM ');
                 $length = 5;
             }
             if (isset($one) && $one != '') {
-
-                $one = substr($one,$length);
+                $one = substr($one, $length);
 
                 if (strstr($one, ' ')) {
                     $table = substr($one, 0, strpos($one, " "));
@@ -271,8 +269,7 @@ class db_connection
         do {
             $one = stristr($query2, 'JOIN ');
             if (isset($one) && $one != '') {
-
-                $one = substr($one,5);
+                $one = substr($one, 5);
 
                 if (strstr($one, ' ')) {
                     $table = substr($one, 0, strpos($one, " "));

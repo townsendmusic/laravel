@@ -4,44 +4,55 @@ namespace App;
 
 use PDO;
 
-class pdo_result {
+class pdo_result
+{
     //Class to mimick MySQLi fetch functions
     function __construct($stmt)
-    {   
-        if (!$stmt) return null;
+    {
+        if (!$stmt) {
+            return null;
+        }
         $this->stmt = $stmt;
         $this->num_rows = $stmt->rowCount();
     }
 
-    function fetch_assoc(){
+    function fetch_assoc()
+    {
         return $this->stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    function fetch_array(){
+    function fetch_array()
+    {
         return $this->stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    function fetch_row(){
+    function fetch_row()
+    {
         return $this->stmt->fetch(PDO::FETCH_NUM);
     }
 
-    function fetch_object(){
+    function fetch_object()
+    {
         return $this->stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    function fetch_all(){
+    function fetch_all()
+    {
         return $this->stmt->fetch(PDO::FETCH_LAZY);
     }
 
-    function fetch(){
+    function fetch()
+    {
         return $this->stmt->fetch(PDO::FETCH_LAZY);
     }
 
-    function fetchAllObject(){
+    function fetchAllObject()
+    {
         return $this->stmt->fetchAll(PDO::FETCH_CLASS);
     }
 
-    function free_result(){
+    function free_result()
+    {
         return;
-    }    
+    }
 }
