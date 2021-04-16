@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Section extends Model
 {
     use HasFactory;
+    
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->whereRaw("lower(description) = '".strtolower($value)."'")->first();
+    }
 
     public function products(): BelongsToMany
     {
