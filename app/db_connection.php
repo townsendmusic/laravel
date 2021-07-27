@@ -2,18 +2,18 @@
 
 namespace App;
 
-use DB;
+use PDO;
 
 class db_connection
 {
     public function connect()
     {
-        $this->conn = DB::connection()->getPdo();
+        $this->conn = new PDO('mysql:host=localhost;dbname=townsendmusic', 'root', 'root');
     }
 
     public function write_connect()
     {
-        $this->conn = DB::connection()->getPdo();
+        $this->conn = new PDO('mysql:host=localhost;dbname=townsendmusic', 'root', 'root');
     }
 
     public function getDefaultTransactionSettings()
@@ -333,7 +333,7 @@ class db_connection
         if (is_array($string)) {
             return;
         }
-        
+
         return addslashes($string);
     }
 }

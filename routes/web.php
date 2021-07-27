@@ -14,6 +14,9 @@ use App\Http\Controllers\ProductsController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})
+
+Route::get('/products/section/{section}/{returnOnlyPreorderProducts?}/{number?}/{page?}', [ProductsController::class, 'section']);
+
+Route::get('/products/search/{returnOnlyPreorderProducts?}/{searchTerm}/{number}/{page}', [ProductsController::class, 'search']);
+
+Route::get('/products/{returnOnlyPreorderProducts?}/{number?}/{page?}', [ProductsController::class, 'products']);
